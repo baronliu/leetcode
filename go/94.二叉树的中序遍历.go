@@ -47,4 +47,5 @@ func inorderTraversal(root *TreeNode) []int {
 	return append(append(inorderTraversal(root.Left), root.Val), inorderTraversal(root.Right)...)
 }
 
+// @lc code=end
 
