@@ -35,16 +35,33 @@ func maxSubArray(nums []int) int {
 	}
 
 	//1.暴力法
+	// max := nums[0]
+	// for i := 0; i < len(nums); i++ {
+	// 	current := 0
+	// 	for j := i; j < len(nums); j++ {
+	// 		current += nums[j]
+	// 		if current > max {
+	// 			max = current
+	// 		}
+	// 	}
+	// }
+	// return max
+
+	//2.动态规划
 	max := nums[0]
-	for i := 0; i < len(nums); i++ {
-		current := 0
-		for j := i; j < len(nums); j++ {
-			current += nums[j]
-			if current > max {
-				max = current
-			}
+	subMax := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if subMax > 0 {
+			subMax += nums[i]
+		} else {
+			subMax = nums[i]
+		}
+
+		if subMax > max {
+			max = subMax
 		}
 	}
+
 	return max
 }
 
