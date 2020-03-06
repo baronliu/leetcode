@@ -71,7 +71,7 @@ func distributeCandies(candies int, num_people int) []int {
 	result := make([]int, num_people)
 
 	//1.总次数
-	totalCount := int(math.Sqrt(2*float64(candies)+1/4) - 1.0/2)
+	totalCount := int(math.Sqrt(2*float64(candies)+1.0/4) - 1.0/2)
 
 	//2.行取整
 	xLimit := totalCount / num_people
