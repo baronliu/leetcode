@@ -1,5 +1,3 @@
-import "math"
-
 /*
  * @lc app=leetcode.cn id=121 lang=golang
  *
@@ -41,6 +39,10 @@ import "math"
 // @lc code=start
 func maxProfit(prices []int) int {
 	max := 0
+	if len(prices) <= 1 {
+		return max
+	}
+
 	//1.暴力法
 	// for i:=0;i<len(prices) - 1;i++ {
 	//     for j:= i;j<len(prices);j++{
@@ -50,15 +52,14 @@ func maxProfit(prices []int) int {
 	//     }
 	// }
 
-	//2.一次遍历
-	minPoint := math.MaxInt64
-	for i := 0; i < len(prices); i++ {
-		if prices[i] < minPoint {
-			minPoint = prices[i]
-		} else if prices[i]-minPoint > max {
-			max = prices[i] - minPoint
+	//2.一次遍历：遍历到当前值的时候，减去前面的最小值，就能得到当前值的最大差价，然后与保存下来的最大值做比较，从而遍历得到最大值
+	low := prices[0]
+	for i := 1; i < len(prices); i++ {
+		if prices[i] < low {
+			low = prices[i]
+		} else if prices[i]-low > max {
+			max = prices[i] - low
 		}
-
 	}
 	return max
 }
