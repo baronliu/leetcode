@@ -60,6 +60,7 @@ func maxAreaOfIsland(grid [][]int) int {
 	return maxCount
 }
 
+//1. BFS
 func getCount(grid [][]int, i int, j int) int {
 	//坐标序列
 	var queue [][]int
@@ -93,6 +94,33 @@ func getCount(grid [][]int, i int, j int) int {
 	}
 	return result
 }
+
+//2. DFS
+// func getCount(grid [][]int, m int, n int) int {
+// 	result := 0
+// 	if grid[m][n] == 1 {
+// 		grid[m][n] = 2
+// 		result++
+// 		//添加新四个方向上的新元素
+// 		//上
+// 		if m >= 1 && grid[m-1][n] == 1 {
+// 			result += getCount(grid, m-1, n)
+// 		}
+// 		//下
+// 		if m < len(grid)-1 && grid[m+1][n] == 1 {
+// 			result += getCount(grid, m+1, n)
+// 		}
+// 		//左
+// 		if n >= 1 && grid[m][n-1] == 1 {
+// 			result += getCount(grid, m, n-1)
+// 		}
+// 		//右
+// 		if n < len(grid[0])-1 && grid[m][n+1] == 1 {
+// 			result += getCount(grid, m, n+1)
+// 		}
+// 	}
+// 	return result
+// }
 
 // @lc code=end
 
