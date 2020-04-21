@@ -1,5 +1,3 @@
-import "fmt"
-
 /*
  * @lc app=leetcode.cn id=670 lang=golang
  *
@@ -57,7 +55,6 @@ func maximumSwap(num int) int {
 		//扫描大于当前值的元素
 		for j := 9; j > arr[i]; j-- {
 			idx := cache[j]
-			fmt.Println(i)
 			if idx < i && idx >= 0 {
 				arr[i], arr[idx] = arr[idx], arr[i]
 				goto breakHere
