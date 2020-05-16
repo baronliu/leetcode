@@ -34,15 +34,23 @@
  * }
  */
 func reverseList(head *ListNode) *ListNode {
-	var prev *ListNode
-	var prev *ListNode
-	for head != nil {
-		next := head.Next
-		head.Next = prev
-		prev = head
-		head = next
+	//迭代
+	// var prev, next *ListNode
+	// for head != nil {
+	// 	next = head.Next
+	// 	head.Next = prev
+	// 	prev = head
+	// 	head = next
+	// }
+
+	//递归
+	if head == nil || head.Next == nil {
+		return head
 	}
-	return prev
+	last := reverseList(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return last
 }
 
 // @lc code=end
