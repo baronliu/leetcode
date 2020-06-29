@@ -34,54 +34,48 @@
 
 // @lc code=start
 func findKthLargest(nums []int, k int) int {
-	if len(nums) < 1 {
-		return 0
-	}
-
 	if len(nums) == 1 {
-		return nums[0]
-	}
-
+        return nums[0]
+    }
 	arr := nums[:k]
-	for i := (k - 2) / 2; i >= 0; i-- {
-		heapify(arr, i, k)
-	}
-
-	for i := k; i < len(nums); i++ {
+	for i := (k - 2)/2; i>=0; i-- {
+        heapify(arr, i, k)
+    }
+	for i:=k; i<len(nums); i++ {
 		if arr[0] < nums[i] {
 			arr[0] = nums[i]
 			heapify(arr, 0, k)
 		}
 	}
-
 	return arr[0]
 }
 
-//除顶点外的堆结构正常
-func heapify(a []int, k int, l int) {
-	if k >= l {
+//以i的索引为顶
+func heapify(a []int, i int, l int) {
+	if i > l {
 		return
 	}
-	i := 2*k + 1
-	j := 2*k + 2
-	min := k
-	if i < l && a[i] < a[min] {
-		min = i
+
+	min := i
+	left := 2*i + 1
+	right := 2*i +2
+
+	if left < l && a[left] < a[min]{
+		min = left
 	}
 
-	if j < l && a[j] < a[min] {
-		min = j
+	if right < l && a[right] < a[min]{
+		min = right
 	}
 
-	if min != k {
-		swap(a, min, k)
+	if min != i {
+		swap(a, min, i)
 		heapify(a, min, l)
 	}
 }
 
-func swap(a []int, i int, j int) {
+func swap(a []int, i, j int)  {
 	a[i], a[j] = a[j], a[i]
 }
-
 // @lc code=end
 
