@@ -41,47 +41,92 @@
  */
 
 // @lc code=start
+type ListNode struct {
+    k, v int
+    prev, next *ListNode
+}
+
 type LRUCache struct {
-    info [][]int
-    max int
+    len, capacity int
+    head, tail *ListNode
+    dict map[int]*ListNode
 }
 
 
 func Constructor(capacity int) LRUCache {
-    var c LRUCache
-    var info [][]int
-    c.info = info
-    c.max = capacity
+    //初始化容量
+    c := LRUCache{capacity: capacity}
+    //初始化字典
+    c.dict = make(map[int]*ListNode, 0)
     return c
+} 
+
+func (this *LRUCache) moveToHead(n *ListNode) {
+    //n.prev == nil的时候，当前节点就在首节点，无需变更
+    if n.prev != nil {
+        n.prev.next = n.next
+        //当前节点如果是尾节点
+        if n.next == nil {
+            //替换尾节点
+            this.tail = n.prev
+        } else {
+            //非尾节点时考虑下个节点的前置
+            n.next.prev = n.prev
+        }
+        //建立当前头结点与替换节点的关联关系
+        n.prev = nil
+        n.next = this.head
+        this.head.prev = n
+        //替换头节点
+        this.head = n
+    }
 }
 
 
 func (this *LRUCache) Get(key int) int {
-    for i, value := range this.info {
-        if value[0] == key{
-            this.info = append(this.info[:i], this.info[i+1:]...)
-            this.info = append(this.info, value)
-            return value[1]
-        }
+    if node, ok := this.dict[key]; !ok {
+        //未能找到
+        return -1
+    } else {
+        //可以找到：1,把节点挪至head; 2,返回这个节点的值
+        this.moveToHead(node)
+        return node.v
     }
-    return -1
 }
 
-
 func (this *LRUCache) Put(key int, value int)  {
-    for i, v := range this.info {
-        if v[0] == key{
-            v[1] = value
-            this.info = append(this.info[:i], this.info[i+1:]...)
-            this.info = append(this.info, v)
-            return;
-        }
+    //判断当前是否有值
+    curV := this.Get(key)
+
+    //更新
+    if curV != -1 {
+        //只用替换下头结点的值即可
+        this.head.v = value
+        return
     }
-    if len(this.info) >= this.max {
-        this.info = append(this.info[1:], []int{key, value})
+
+    //新增:1.容量够->直接把节点添加到头部即可 2.容量不够->先添加再剔除
+    n := &ListNode{k: key, v: value, next: this.head}
+    if this.tail == nil {
+        //尾为空的时候说明，这是添加的第一个元素，需要设置下尾
+        this.tail = n
     } else {
-        this.info = append(this.info, []int{key, value})
+        //尾不为空时，说明头也不为空，需要把当前的头的前置处理为新节点
+        this.head.prev = n
     }
+    //新增节点至头部
+    this.head = n
+
+    if this.len < this.capacity {
+        this.len++
+    } else {
+        //删除尾节点
+        delete(this.dict, this.tail.k)
+        this.tail.prev.next = nil
+        this.tail = this.tail.prev
+    }
+
+    this.dict[key] = n
 }
 
 
