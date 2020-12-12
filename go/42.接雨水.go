@@ -29,11 +29,11 @@
 
 // @lc code=start
 func trap(height []int) int {
-	result := 0
-	//小于三列的时候存储量为0
-	if len(height) < 3 {
-		return result
-	}
+	// result := 0
+	// //小于三列的时候存储量为0
+	// if len(height) < 3 {
+	// 	return result
+	// }
 
 	//1.暴力法(缺点：在找寻最高点的时候浪费了太多比较)
 	// for i := 1; i < len(height)-1; i++ {
@@ -62,38 +62,76 @@ func trap(height []int) int {
 	// }
 
 	//2.暴力法优化（在遍历过程中前一次求最大值的结果不用反复再比较）
-	leftPrevMax := 0
-	rightMaxArr := make([]int, len(height))
-	rightMaxArr[len(height)-1] = height[len(height)-1]
-	for j := len(height) - 2; j > 1; j-- {
-		if rightMaxArr[j+1] >= height[j] {
-			rightMaxArr[j] = rightMaxArr[j+1]
-		} else {
-			rightMaxArr[j] = height[j]
-		}
+	// leftPrevMax := 0
+	// rightMaxArr := make([]int, len(height))
+	// rightMaxArr[len(height)-1] = height[len(height)-1]
+	// for j := len(height) - 2; j > 1; j-- {
+	// 	if rightMaxArr[j+1] >= height[j] {
+	// 		rightMaxArr[j] = rightMaxArr[j+1]
+	// 	} else {
+	// 		rightMaxArr[j] = height[j]
+	// 	}
+	// }
+
+	// for i := 1; i < len(height)-1; i++ {
+	// 	left, right, min, leftMax, rightMax := i-1, i+1, 0, 0, 0
+	// 	if height[left] > leftPrevMax {
+	// 		leftMax = height[left]
+	// 	} else {
+	// 		leftMax = leftPrevMax
+	// 	}
+	// 	leftPrevMax = leftMax
+	// 	rightMax = rightMaxArr[right]
+
+	// 	if leftMax >= rightMax {
+	// 		min = rightMax
+	// 	} else {
+	// 		min = leftMax
+	// 	}
+
+	// 	if min > height[i] {
+	// 		result += min - height[i]
+	// 	}
+	// }
+	// return result
+
+	//3.思路美化
+	length := len(height)
+	if length < 3 {
+		return 0
+	}
+	ret := 0
+	leftPrevMaxArr := make([]int, length-2)
+	rightPrevMaxArr := make([]int, length-2)
+	leftPrevMax, rightPrevMax := 0, 0
+
+	for i := 0; i < length-2; i++ {
+		//求左边的最大值
+		leftPrevMax = max(height[i], leftPrevMax)
+		leftPrevMaxArr[i] = leftPrevMax
+
+		//求右边最大值
+		rightPrevMax = max(rightPrevMax, height[length-1-i])
+		rightPrevMaxArr[i] = rightPrevMax
 	}
 
-	for i := 1; i < len(height)-1; i++ {
-		left, right, min, leftMax, rightMax := i-1, i+1, 0, 0, 0
-		if height[left] > leftPrevMax {
-			leftMax = height[left]
-		} else {
-			leftMax = leftPrevMax
-		}
-		leftPrevMax = leftMax
-		rightMax = rightMaxArr[right]
-
-		if leftMax >= rightMax {
-			min = rightMax
-		} else {
-			min = leftMax
-		}
-
-		if min > height[i] {
-			result += min - height[i]
-		}
+	for i := 1; i < length-1; i++ {
+		ret += max(0, min(leftPrevMaxArr[i-1], rightPrevMaxArr[length-2-i])-height[i])
 	}
-	return result
+	return ret
+}
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 // @lc code=end
