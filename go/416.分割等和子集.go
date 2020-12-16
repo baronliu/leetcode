@@ -20,6 +20,7 @@ func canPartition(nums []int) bool {
 		return false
 	}
 
+	//前i个元素中，组合值不大于j的最大值。所以最后就判断刚好等于j的情况就好
 	dp := make([][]int, length+1)
 
 	for i := 0; i < length+1; i++ {
