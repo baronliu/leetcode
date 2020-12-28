@@ -42,38 +42,39 @@
  * }
  */
 func diameterOfBinaryTree(root *TreeNode) int {
-	result := 0
-	deep(root, &result)
-	return result
+	var ans int
+	deep(root, &ans)
+	return ans
 }
 
-func deep(node *TreeNode, result *int) int {
-	if node == nil {
+func deep(root *TreeNode, ans *int) int {
+	if root == nil {
 		return 0
 	}
 
-	var deepLeft, deepRight int
-
-	if node.Left != nil {
-		deepLeft = deep(node.Left, result) + 1
+	if root.Left == nil && root.Right == nil {
+		return 0
 	}
 
-	if node.Right != nil {
-		deepRight = deep(node.Right, result) + 1
+	remain := 2
+
+	if root.Left == nil || root.Right == nil {
+		remain = 1
 	}
 
-	if deepLeft+deepRight > *result {
-		*result = deepLeft + deepRight
-	}
+	left := deep(root.Left, ans)
+	right := deep(root.Right, ans)
 
-	return max(deepLeft, deepRight)
+	*ans = max(*ans, left+right+remain)
+
+	return max(left, right) + 1
 }
 
-func max(i int, j int) int {
-	if i >= j {
-		return i
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
-	return j
+	return b
 }
 
 // @lc code=end
