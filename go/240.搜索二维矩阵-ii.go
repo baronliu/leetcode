@@ -41,13 +41,13 @@
 
 // @lc code=start
 func searchMatrix(matrix [][]int, target int) bool {
-	if len(matrix) < 1 {
+	m := len(matrix)
+	n := len(matrix[0])
+	if matrix[0][0] > target || matrix[m-1][n-1] < target {
 		return false
 	}
-
-	i := len(matrix) - 1
-	j := 0
-	for i >= 0 && j <= len(matrix[0])-1 {
+	i, j := m-1, 0
+	for i >= 0 && j <= n-1 {
 		if matrix[i][j] == target {
 			return true
 		} else if matrix[i][j] > target {
