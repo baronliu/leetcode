@@ -56,18 +56,20 @@
 
 // @lc code=start
 func removeDuplicates(nums []int) int {
-	i := 0
-	for i < len(nums) {
-		if i == len(nums)-1 {
-			break
-		}
-		if nums[i] == nums[i+1] {
-			nums = append(nums[:i], nums[i+1:]...)
-		} else {
-			i++
-		}
+	if len(nums) <= 1 {
+		return len(nums)
 	}
-	return len(nums)
+
+	i, j := 0, 1
+	for i < len(nums) && j < len(nums) {
+		if nums[j] != nums[i] {
+			i++
+			nums[i] = nums[j]
+		}
+		j++
+	}
+
+	return i + 1
 }
 
 // @lc code=end
