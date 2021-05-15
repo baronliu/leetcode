@@ -6,6 +6,7 @@
 
 // @lc code=start
 
+//dailyTemperatures
 func dailyTemperatures(T []int) []int {
 	ans := make([]int, len(T))
 	if len(T) == 1 {
